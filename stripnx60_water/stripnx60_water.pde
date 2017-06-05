@@ -1,18 +1,23 @@
-import processing.io.*;
+import com.pi4j.gpio.*;
 
 OPC opc;
 PImage im;
 
 int numStrips = 24;
 int numLedsPerStrip = 60;
+int IR_INPUT_PIN = 4;
 
-int IR_INPUT = 4;
+GpioController gpio;
+GpioPinDigitalInput irSensor;
 
 void setup()
 {
   size(400, 800);
   
-  GPIO.pinMode(IR_INPUT, GPIO.INPUT);
+  gpio = GpioFactory.getInstance();
+  irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
+  
+  frameRate(0.5);
 
   // Load a sample image
   im = loadImage("light-blue-flames.jpg");
@@ -42,7 +47,9 @@ void draw()
   image(im, 0, y + imHeight, width, imHeight);
   */
   
-  if (GPIO.digitalRead(IR_INPUT) == GPIO.HIGH) {
+  println("HIGH:", irSensor.isHigh());
+  
+  if (irSensor.isHigh()) {
     background(255, 0, 0);
   } else {
     background(0, 0, 255);
