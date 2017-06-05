@@ -29,7 +29,7 @@ import com.pi4j.gpio.*;
 OPC opc;
 PImage im;
 
-int numStrips = 24;
+int numStrips = 16;
 int numLedsPerStrip = 60;
 int IR_INPUT_PIN = 4;
 
