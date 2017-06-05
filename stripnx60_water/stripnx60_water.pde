@@ -1,12 +1,23 @@
+import com.pi4j.gpio.*;
+
 OPC opc;
 PImage im;
 
 int numStrips = 24;
 int numLedsPerStrip = 60;
+int IR_INPUT_PIN = 4;
+
+GpioController gpio;
+GpioPinDigitalInput irSensor;
 
 void setup()
 {
   size(400, 800);
+  
+  gpio = GpioFactory.getInstance();
+  irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
+  
+  frameRate(0.5);
 
   // Load a sample image
   im = loadImage("light-blue-flames.jpg");
@@ -23,6 +34,7 @@ void setup()
 
 void draw()
 {
+  /*
   // Scale the image so that it matches the width of the window
   int imHeight = im.height * width / im.width;
 
@@ -33,4 +45,13 @@ void draw()
   // Use two copies of the image, so it seems to repeat infinitely  
   image(im, 0, y, width, imHeight);
   image(im, 0, y + imHeight, width, imHeight);
+  */
+  
+  println("HIGH:", irSensor.isHigh());
+  
+  if (irSensor.isHigh()) {
+    background(255, 0, 0);
+  } else {
+    background(0, 0, 255);
+  }
 }
