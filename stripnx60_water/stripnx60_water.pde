@@ -1,3 +1,29 @@
+import com.pi4j.concurrent.*;
+import com.pi4j.io.gpio.event.*;
+import com.pi4j.io.gpio.exception.*;
+import com.pi4j.io.gpio.*;
+import com.pi4j.io.gpio.tasks.impl.*;
+import com.pi4j.io.serial.*;
+import com.pi4j.io.serial.impl.*;
+import com.pi4j.io.spi.*;
+import com.pi4j.io.w1.*;
+import com.pi4j.jni.*;
+import com.pi4j.system.*;
+import com.pi4j.io.file.*;
+import com.pi4j.io.gpio.trigger.*;
+import com.pi4j.io.i2c.*;
+import com.pi4j.io.i2c.impl.*;
+import com.pi4j.io.serial.tasks.*;
+import com.pi4j.io.spi.impl.*;
+import com.pi4j.platform.*;
+import com.pi4j.system.impl.*;
+import com.pi4j.util.*;
+import com.pi4j.wiringpi.*;
+import com.pi4j.io.gpio.impl.*;
+import com.pi4j.io.wdt.*;
+import com.pi4j.temperature.*;
+import com.pi4j.io.wdt.impl.*;
+
 import com.pi4j.gpio.*;
 
 OPC opc;
@@ -47,7 +73,7 @@ void draw()
   image(im, 0, y + imHeight, width, imHeight);
   */
   
-  println("HIGH:", irSensor.isHigh());
+  //println("HIGH:", irSensor.isHigh());
   
   if (irSensor.isHigh()) {
     background(255, 0, 0);
