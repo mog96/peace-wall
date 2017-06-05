@@ -1,12 +1,18 @@
+import processing.io.*;
+
 OPC opc;
 PImage im;
 
 int numStrips = 24;
 int numLedsPerStrip = 60;
 
+int IR_INPUT = 4;
+
 void setup()
 {
   size(400, 800);
+  
+  GPIO.pinMode(IR_INPUT, GPIO.INPUT);
 
   // Load a sample image
   im = loadImage("light-blue-flames.jpg");
@@ -23,6 +29,7 @@ void setup()
 
 void draw()
 {
+  /*
   // Scale the image so that it matches the width of the window
   int imHeight = im.height * width / im.width;
 
@@ -33,4 +40,11 @@ void draw()
   // Use two copies of the image, so it seems to repeat infinitely  
   image(im, 0, y, width, imHeight);
   image(im, 0, y + imHeight, width, imHeight);
+  */
+  
+  if (GPIO.digitalRead(IR_INPUT) == GPIO.HIGH) {
+    background(255, 0, 0);
+  } else {
+    background(0, 0, 255);
+  }
 }
