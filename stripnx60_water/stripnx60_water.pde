@@ -101,7 +101,7 @@ void setup()
   frameRate(0.5);
 
   // Load a sample image
-  im = loadImage("light-blue-flames.jpg");
+  im = loadImage("blue-flames.jpg");
 
   // Connect to the local instance of fcserver
   opc = new OPC(this, "127.0.0.1", 7890);
@@ -246,7 +246,7 @@ void drawCurve(Curve curve) {
         curve.endPoint.x + kBorderWidth, curve.endPoint.y + kBorderWidth,
         curve.cp2.x + kBorderWidth, curve.cp2.y + kBorderWidth);
   // fill(255, 105, 180); // Pink
-  fill(138, 43, 226); 
+  fill(0, 255, 255); 
   ellipse(curve.cp1.x + kBorderWidth, curve.cp1.y + kBorderWidth, 2, 2);
   ellipse(curve.cp2.x + kBorderWidth, curve.cp2.y + kBorderWidth, 2, 2);
 }
