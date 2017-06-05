@@ -39,7 +39,7 @@ GpioPinDigitalInput irSensor;
 boolean shouldDrawLines = false;
 
 int kCanvasWidth = 400;
-int kCanvasHeight = 800;
+int kCanvasHeight = 600;
 int kBorderWidth = 40;
 int kFrameWidth = kCanvasWidth + kBorderWidth * 2;
 int kFrameHeight = kCanvasHeight + kBorderWidth * 2;
@@ -60,7 +60,7 @@ float kEndpointBoundingBoxDefaultHeight = 100;
 float kEndpointBoundingBoxCenterShiftMultiplier = 0.6;
 float kTraveledByMouseThreshold = 20;
 float kTraveledByMouseBaseStepSize = 25;
-int kNumLinesToDraw = 1000;
+int kNumLinesToDraw = 5;
 
 public class Point {
   public float x;
@@ -93,7 +93,7 @@ int linesDrawn = 0;
 
 void setup()
 {
-  size(400, 800);
+  size(480, 680);                      // NOTE: MUST MANUALLY CONFIRM: size(kCanvasWidth + kBorderWidth * 2, kCanvasHeight + kBorderWidth * 2)
   
   gpio = GpioFactory.getInstance();
   irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
@@ -109,13 +109,13 @@ void setup()
   // Map eight 60-LED strips.
   for (int i = 0; i < numStrips; i++) {
     // Vertical layout.
-    opc.ledStrip(i * numLedsPerStrip, numLedsPerStrip, i * width / numStrips + (width / numStrips / 2), height / 2, height / 70, HALF_PI, false);
+    opc.ledStrip(i * numLedsPerStrip, numLedsPerStrip, i * width / numStrips + (width / numStrips / 2), height / 2, 5, HALF_PI, false);
   }
   
   curves = new ArrayList<Curve>();
-  size(480, 880);                      // NOTE: MUST MANUALLY CONFIRM: size(kCanvasWidth + kBorderWidth * 2, kCanvasHeight + kBorderWidth * 2)
-  background(255);
   // frameRate(30);
+  
+  linesDrawn = kNumLinesToDraw;
 }
 
 void draw()
@@ -142,7 +142,6 @@ void draw()
   
   if (linesDrawn < kNumLinesToDraw) {
     addCurve();
-    background(255);
     
     for (int i = 0; i < curves.size(); i++) {    
       Curve curve = curves.get(i);
@@ -185,6 +184,7 @@ void draw()
     linesDrawn++;
   } else {
     shouldDrawLines = false;
+  }
 }
 
 
@@ -246,7 +246,7 @@ void drawCurve(Curve curve) {
         curve.endPoint.x + kBorderWidth, curve.endPoint.y + kBorderWidth,
         curve.cp2.x + kBorderWidth, curve.cp2.y + kBorderWidth);
   // fill(255, 105, 180); // Pink
-  fill(83, 145, 234); 
+  fill(138, 43, 226); 
   ellipse(curve.cp1.x + kBorderWidth, curve.cp1.y + kBorderWidth, 2, 2);
   ellipse(curve.cp2.x + kBorderWidth, curve.cp2.y + kBorderWidth, 2, 2);
 }
