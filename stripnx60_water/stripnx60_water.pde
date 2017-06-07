@@ -167,12 +167,14 @@ void draw()
           curve.cp2.x -= 1;
       }
       
+      /*
       // FIXME: Operation -= above not working correctly, as indicated for print of curve with motion direction 0 or 3.
       if (i == 5) {
         println("MOTION DIRECTION:", curve.motionDirection);
         println("CURVE CP1:", curve.cp1.x, curve.cp1.y);
         println("CURVE CP2:", curve.cp2.x, curve.cp2.y);
       }
+      */
       
       drawCurve(curve);
     }
