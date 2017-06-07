@@ -101,7 +101,7 @@ void setup()
   gpio = GpioFactory.getInstance();
   irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
   
-  frameRate(10);
+  frameRate(5);
 
   // Load a sample image
   im = loadImage("blue-flames.jpg");
