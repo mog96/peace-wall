@@ -138,7 +138,7 @@ void draw()
     //println("HIGH:", irSensor.isHigh());
     //println("HIGH:", HIGH);
     
-    if (irSensor.isHigh() && !shouldDrawLines) {
+    if (!irSensor.isHigh() && !shouldDrawLines) {
     // if (HIGH && !shouldDrawLines) {
       linesDrawn = 0;
       shouldDrawLines = true;
