@@ -77,7 +77,7 @@ void draw()
   
   if (isHigh != wasHigh) {
     if (!isHigh && wasHigh && millis() - lastTrigger < 2000) {
-      im = imTwice
+      im = imTwice;
     }
     lastTrigger = millis();
   }
