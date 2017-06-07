@@ -39,6 +39,7 @@ int numLedsPerStrip = 60;
 GpioController gpio;
 GpioPinDigitalInput irSensor;
 
+boolean wasHigh;
 boolean isHigh;
 int lastTrigger;
 int imTwiceStart;
@@ -57,6 +58,7 @@ void setup()
   imTwice = loadImage("flames.jepg");
   im = imLow;
   
+  wasHigh = true;
   isHigh = true;
   lastTrigger = 0;
   imTwiceStart = 0;
@@ -76,7 +78,7 @@ void setup()
 
 void draw()
 {
-  boolean wasHigh = isHigh;
+  wasHigh = isHigh;
   isHigh = irSensor.isHigh();
   
   if (isHigh != wasHigh) {
