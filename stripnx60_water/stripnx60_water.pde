@@ -1,30 +1,30 @@
-import com.pi4j.concurrent.*;
-import com.pi4j.io.gpio.event.*;
-import com.pi4j.io.gpio.exception.*;
-import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.tasks.impl.*;
-import com.pi4j.io.serial.*;
-import com.pi4j.io.serial.impl.*;
-import com.pi4j.io.spi.*;
-import com.pi4j.io.w1.*;
-import com.pi4j.jni.*;
-import com.pi4j.system.*;
-import com.pi4j.io.file.*;
-import com.pi4j.io.gpio.trigger.*;
-import com.pi4j.io.i2c.*;
-import com.pi4j.io.i2c.impl.*;
-import com.pi4j.io.serial.tasks.*;
-import com.pi4j.io.spi.impl.*;
-import com.pi4j.platform.*;
-import com.pi4j.system.impl.*;
-import com.pi4j.util.*;
-import com.pi4j.wiringpi.*;
-import com.pi4j.io.gpio.impl.*;
-import com.pi4j.io.wdt.*;
-import com.pi4j.temperature.*;
-import com.pi4j.io.wdt.impl.*;
+//import com.pi4j.concurrent.*;
+//import com.pi4j.io.gpio.event.*;
+//import com.pi4j.io.gpio.exception.*;
+//import com.pi4j.io.gpio.*;
+//import com.pi4j.io.gpio.tasks.impl.*;
+//import com.pi4j.io.serial.*;
+//import com.pi4j.io.serial.impl.*;
+//import com.pi4j.io.spi.*;
+//import com.pi4j.io.w1.*;
+//import com.pi4j.jni.*;
+//import com.pi4j.system.*;
+//import com.pi4j.io.file.*;
+//import com.pi4j.io.gpio.trigger.*;
+//import com.pi4j.io.i2c.*;
+//import com.pi4j.io.i2c.impl.*;
+//import com.pi4j.io.serial.tasks.*;
+//import com.pi4j.io.spi.impl.*;
+//import com.pi4j.platform.*;
+//import com.pi4j.system.impl.*;
+//import com.pi4j.util.*;
+//import com.pi4j.wiringpi.*;
+//import com.pi4j.io.gpio.impl.*;
+//import com.pi4j.io.wdt.*;
+//import com.pi4j.temperature.*;
+//import com.pi4j.io.wdt.impl.*;
 
-import com.pi4j.gpio.*;
+//import com.pi4j.gpio.*;
 
 OPC opc;
 PImage im;
@@ -33,10 +33,13 @@ int numStrips = 16;
 int numLedsPerStrip = 60;
 int IR_INPUT_PIN = 4;
 
-GpioController gpio;
-GpioPinDigitalInput irSensor;
+//GpioController gpio;
+//GpioPinDigitalInput irSensor;
 
 boolean shouldDrawLines = false;
+
+// FOR TESTING.
+boolean HIGH;
 
 int kCanvasWidth = 400;
 int kCanvasHeight = 600;
@@ -95,10 +98,10 @@ void setup()
 {
   size(480, 680);                      // NOTE: MUST MANUALLY CONFIRM: size(kCanvasWidth + kBorderWidth * 2, kCanvasHeight + kBorderWidth * 2)
   
-  gpio = GpioFactory.getInstance();
-  irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
+  //gpio = GpioFactory.getInstance();
+  //irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
   
-  frameRate(10);
+  frameRate(30);
 
   // Load a sample image
   im = loadImage("blue-flames.jpg");
@@ -113,33 +116,36 @@ void setup()
   }
   
   curves = new ArrayList<Curve>();
-  // frameRate(30);
   
   linesDrawn = kNumLinesToDraw;
 }
 
 void draw()
 {
-  // Scale the image so that it matches the width of the window
-  int imHeight = im.height * width / im.width;
-
-  // Scroll down slowly, and wrap around
-  float speed = 0.03;
-  float y = (millis() * -speed) % imHeight;
+  // Image background moves half as fast as wavy line.
+  if (frameCount % 2 == 0 ) {
+    // Scale the image so that it matches the width of the window
+    int imHeight = im.height * width / im.width;
   
-  // Use two copies of the image, so it seems to repeat infinitely  
-  image(im, 0, y, width, imHeight);
-  image(im, 0, y + imHeight, width, imHeight);
+    // Scroll down slowly, and wrap around
+    float speed = 0.03;
+    float y = (millis() * -speed) % imHeight;
+    
+    // Use two copies of the image, so it seems to repeat infinitely  
+    image(im, 0, y, width, imHeight);
+    image(im, 0, y + imHeight, width, imHeight);
+    
+    //println("HIGH:", irSensor.isHigh());
+    println("HIGH:", HIGH);
+    
+    //if (irSensor.isHigh() && !shouldDrawLines) {
+    if (HIGH && !shouldDrawLines) {
+      linesDrawn = 0;
+      shouldDrawLines = true;
+    }
+   }
   
-  //println("HIGH:", irSensor.isHigh());
-  
-  if (irSensor.isHigh() && !shouldDrawLines) {
-    linesDrawn = 0;
-    shouldDrawLines = true;
-  }
-  
-// MARK: - Begin wavy line code.
-  
+  // Wavy line code.
   if (linesDrawn < kNumLinesToDraw) {
     addCurve();
     
@@ -304,4 +310,24 @@ boolean endpointLinesIntersect(Curve curve1, Curve curve2) {
 // http://www.dcs.gla.ac.uk/~pat/52233/slides/Geometry1x1.pdf
 boolean hasClockwiseOrientation(Point p1, Point p2, Point p3) {
   return (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y) > 0;
+}
+
+
+
+/* FOR TESTING */
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == SHIFT) {
+      HIGH = true;
+    }
+  }
+}
+
+void keyReleased() {
+  if (key == CODED) {
+    if (keyCode == SHIFT) {
+      HIGH = false;
+    }
+  }
 }
