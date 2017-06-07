@@ -1,3 +1,4 @@
+/* UNCOMMENT FOR PRODUCTION */
 import com.pi4j.concurrent.*;
 import com.pi4j.io.gpio.event.*;
 import com.pi4j.io.gpio.exception.*;
@@ -23,7 +24,6 @@ import com.pi4j.io.gpio.impl.*;
 import com.pi4j.io.wdt.*;
 import com.pi4j.temperature.*;
 import com.pi4j.io.wdt.impl.*;
-
 import com.pi4j.gpio.*;
 
 OPC opc;
@@ -33,6 +33,7 @@ int numStrips = 16;
 int numLedsPerStrip = 60;
 int IR_INPUT_PIN = 4;
 
+/* UNCOMMENT FOR PRODUCTION */
 GpioController gpio;
 GpioPinDigitalInput irSensor;
 
@@ -98,8 +99,9 @@ void setup()
 {
   size(480, 680);                      // NOTE: MUST MANUALLY CONFIRM: size(kCanvasWidth + kBorderWidth * 2, kCanvasHeight + kBorderWidth * 2)
   
-  //gpio = GpioFactory.getInstance();
-  //irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
+  /* UNCOMMENT FOR PRODUCTION */
+  gpio = GpioFactory.getInstance();
+  irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
   
   frameRate(30);
 
@@ -141,6 +143,7 @@ void draw()
     /* FOR TESTING */
     //if (!HIGH && !shouldDrawLines) {
     
+    /* UNCOMMENT FOR PRODUCTION */
     if (!irSensor.isHigh() && !shouldDrawLines) {
       linesDrawn = 0;
       shouldDrawLines = true;
