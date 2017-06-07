@@ -48,8 +48,8 @@ void setup()
   irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
 
   // Load a sample image
-  imHigh = loadImage("light-blue-flames.jpg");
-  imLow = loadImage("blue-flames.jpg");
+  imHigh = loadImage("blue-flames.jpg");
+  imLow = loadImage("light-blue-flames.jpg");
   im = imLow;
 
   // Connect to the local instance of fcserver
