@@ -27,10 +27,8 @@ import com.pi4j.io.wdt.impl.*;
 import com.pi4j.gpio.*;
 
 OPC opc;
-PImage imHigh;
-PImage imLow;
-PImage imTwice;
-PImage im;
+PImage[] images;
+int imageIndex = 0;
 
 int numStrips = 16;
 int numLedsPerStrip = 60;
@@ -52,10 +50,10 @@ void setup()
   irSensor = gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, PinPullResistance.PULL_UP);
 
   // Load a sample image
-  imHigh = loadImage("blue-flames.jpg");
-  imLow = loadImage("light-blue-flames.jpg");
-  imTwice = loadImage("flames.jepg");
-  im = imLow;
+  images = new PImage[numImages];
+  images[0] = loadImage("blue-flames.jpg");
+  images[1] = loadImage("light-blue-flames.jpg");
+  images[2] = loadImage("flames.jpeg");
 
   // Connect to the local instance of fcserver
   opc = new OPC(this, "127.0.0.1", 7890);
@@ -77,22 +75,22 @@ void draw()
   
   if (isHigh != wasHigh) {
     if (!isHigh && wasHigh && millis() - lastTrigger < 2000) {
-      im = imTwice;
+      imageIndex = 2;
     }
     lastTrigger = millis();
   }
   if (millis() - imTwiceStart > 4000)
-    im = irSensor.isHigh() ? imHigh : imLow;
+    imageIndex = irSensor.isHigh() ? 0 : 1;
   }
   
   // Scale the image so that it matches the width of the window
-  int imHeight = im.height * width / im.width;
+  int imHeight = images[imageIndex].height * width / images[imageIndex].width;
 
   // Scroll down slowly, and wrap around
   float speed = 0.03;
   float y = (millis() * -speed) % imHeight;
   
   // Use two copies of the image, so it seems to repeat infinitely  
-  image(im, 0, y, width, imHeight);
-  image(im, 0, y + imHeight, width, imHeight);
+  image(images[imageIndex], 0, y, width, imHeight);
+  image(images[imageIndex], 0, y + imHeight, width, imHeight);
 }
