@@ -29,15 +29,19 @@ import com.pi4j.gpio.*;
 OPC opc;
 PImage imHigh;
 PImage imLow;
+PImage imTwice;
 PImage im;
 
 int numStrips = 16;
 int numLedsPerStrip = 60;
-int IR_INPUT_PIN = 4;
 
 /* UNCOMMENT FOR PRODUCTION */
 GpioController gpio;
 GpioPinDigitalInput irSensor;
+
+boolean isHigh = true;
+int lastTrigger = 0;
+int imTwiceStart = 0;
 
 void setup()
 {
@@ -50,6 +54,7 @@ void setup()
   // Load a sample image
   imHigh = loadImage("blue-flames.jpg");
   imLow = loadImage("light-blue-flames.jpg");
+  imTwice = loadImage("flames.jepg");
   im = imLow;
 
   // Connect to the local instance of fcserver
@@ -67,7 +72,18 @@ void setup()
 
 void draw()
 {
-  im = irSensor.isHigh() ? imHigh : imLow;
+  boolean wasHigh = isHigh;
+  isHigh = irSensor.isHigh();
+  
+  if (isHigh != wasHigh) {
+    if (!isHigh && wasHigh && millis() - lastTrigger < 2000) {
+      im = imTwice
+    }
+    lastTrigger = millis();
+  }
+  if (millis() - imTwiceStart > 4000)
+    im = irSensor.isHigh() ? imHigh : imLow;
+  }
   
   // Scale the image so that it matches the width of the window
   int imHeight = im.height * width / im.width;
