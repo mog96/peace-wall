@@ -1,1 +1,0 @@
-xvfb-run /usr/local/lib/processing/processing-java --sketch=/home/pi/Documents/peace-wall/stripnx60_water --run
