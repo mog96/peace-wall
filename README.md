@@ -5,7 +5,7 @@
 
 Final project for [ARTSTUDI 163: Drawing with Code](https://github.com/mog96/drawing-with-code). A motion sensor toggles the display to red when the viewer's hand breaks the sensor's infrared beam.
 
-Motion sensor; infrared transmit and receive:
+Infrared motion sensor transmit and receive:
 ![peace-wall_final-motion-sensor-diagram](https://github.com/mog96/peace-wall/blob/master/Photos/peace-wall_final-motion-sensor-diagram.jpg)
 
 Power supply and control:
